@@ -120,6 +120,27 @@ ComputerCraft runs every computer's Lua on **one** thread, one event at a time. 
 Without these Java arguments, scheduling works exactly like the original, apart from the
 lost-wakeup fix.
 
+#### Recommendation for servers: turn on `-Dcc.reuseWorker=true`
+
+A load test pushed a single-player world to the point where the computer thread can't keep up,
+then compared both schedulers under exactly the same load. The load was a 16-turtle quarry, 4
+dashboards and 8 computers running adjustable CPU work
+([`tests/ingame/burn`](tests/ingame/burn)).
+
+| Extra load per load computer | Original scheduler | `-Dcc.reuseWorker=true` |
+|---|---|---|
+| ~3.7 ms × 20/s | **overloaded**: 99% busy, 180–320 ms average wait, up to 6 s, 165–890 events dropped a minute | fine: 87% busy, ~40 ms average wait, 0 dropped |
+| ~4.4 ms × 20/s | overloaded | at the edge: 97% busy, 70–94 ms, 0 dropped |
+| ~4.75 ms × 20/s | overloaded | **overloaded**: 98% busy, 135–237 ms, up to 8.7 s, 168–809 dropped a minute |
+
+Starting a Java thread for every event costs about 0.2–0.3 ms. At 26,000 events a minute that's
+10–12% of a core. Removing it lets a server take roughly **12–17% of a core more** Lua work
+before it falls over. That's about half a quarry, or a dozen more reactor programs. It moves
+the limit, but doesn't remove it. Everything still runs on one thread.
+
+"Dropped" means ComputerCraft threw events away because a computer already had 256 waiting. In
+game that shows up as programs missing timer, rednet or turtle events, not just running slowly.
+
 ## Installing
 
 Replace `mods/ComputerCraft1.63+tomo1.jar` with the release jar, on the server and on clients. The

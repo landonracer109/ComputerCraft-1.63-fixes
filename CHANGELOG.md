@@ -2,6 +2,56 @@
 
 Newest first. Each release is a drop-in replacement for `mods/ComputerCraft1.63+tomo1.jar`.
 
+## Load test at the limit (2026-09-28, no new release)
+
+This entry is measurements only. `fixes-1` is unchanged, and the test ran on the `fixes-1` jar with
+`-Dcc.profileSeconds=60`.
+
+**Setup:** single player, the same world and build for every run:
+- a 16-turtle quarry plus its service turtle and main computer;
+- 4 dashboards redrawing 10 times a second;
+- 8 computers running [`burn`](tests/ingame/burn), 20 times a second each. Their work per event
+  was raised until the original scheduler couldn't keep up.
+
+Only minutes where the quarry was mining full-time are counted, because its load drops when the
+fleet moves between chunks. The first 2 minutes after loading the world are left out, since the
+server is catching up on its backlog then.
+
+**Original scheduler, `burn` at 23,000 units (~3.7 ms per event), 8 minutes:**
+
+| | |
+|---|---|
+| Thread busy | 98–99% |
+| Average wait | 180–320 ms |
+| Worst wait per minute | 3.3–6.4 s |
+| Events dropped (queue full) | 165–893 per minute |
+| Events handled | ~25,800 a minute |
+
+Every computer fell behind: the load computers got about 920 of their 1,200 events a minute, and
+the dashboards about 577 of 600.
+
+**`-Dcc.reuseWorker=true`, same load, 8 minutes:**
+
+| | |
+|---|---|
+| Thread busy | 86–89% |
+| Average wait | 37–54 ms |
+| Worst wait per minute | 0.4–1.7 s |
+| Events dropped | 0 |
+| Events handled | ~27,600 a minute, 7% more |
+
+The load computers got about 1,075 events a minute, and the miners about 1,020 instead of 850.
+
+**Finding the new limit with the reused worker**, 3 minutes per step:
+
+| `burn` units | Event cost | Result |
+|---|---|---|
+| 29,000 | ~4.4 ms | 96–97% busy, 70–94 ms waits (rising), 0 dropped: at the edge |
+| 32,000 | ~4.75 ms | 97–98% busy, 89–237 ms waits, up to 8.7 s, 168–809 dropped a minute: over the limit |
+
+**Conclusion:** the reused worker gives about 12–17% of a core of headroom. It's the right
+setting for a busy server, but it doesn't make the single thread any less of a limit.
+
 ## fixes-1 (2026-09-27)
 
 First release of this repo. It contains everything from
