@@ -1,0 +1,132 @@
+# 8 parallel workers (experimental-parallel branch). Raw x1 minutes, then per-step summaries recorded during the run (the raw log for x2-x8 was rotated away by the game).
+# passes x1 (raw)
+[CC-Profile] 60s: 31169 tasks, thread busy 229.5%, queue wait avg 4.3 ms / max 45 ms, DROPPED (queue full) 0, worker threads created 0, mode 8 threads (busy % is summed over them)
+[CC-Profile]   #43 "load 17"                  10.4% of period,  1198 tasks, avg   5.20 ms, max    12.6 ms
+[CC-Profile]   #28 "load 2"                   10.3% of period,  1198 tasks, avg   5.18 ms, max    16.9 ms
+[CC-Profile]   #41 "load 15"                  10.3% of period,  1198 tasks, avg   5.16 ms, max    16.0 ms
+[CC-Profile]   #42 "load 16"                  10.3% of period,  1198 tasks, avg   5.14 ms, max    16.0 ms
+[CC-Profile]   #35 "load 9"                   10.3% of period,  1198 tasks, avg   5.13 ms, max    15.7 ms
+[CC-Profile]   #39 "load 13"                  10.2% of period,  1199 tasks, avg   5.11 ms, max    28.6 ms
+[CC-Profile]   #44 "load 18"                  10.2% of period,  1198 tasks, avg   5.11 ms, max    14.2 ms
+[CC-Profile]   #29 "load 3"                   10.2% of period,  1199 tasks, avg   5.08 ms, max    15.5 ms
+[CC-Profile]   #32 "load 6"                   10.1% of period,  1199 tasks, avg   5.07 ms, max    20.1 ms
+[CC-Profile]   #27 "load 1"                   10.1% of period,  1198 tasks, avg   5.04 ms, max    14.4 ms
+[CC-Profile]   #45 "load 19"                  10.0% of period,  1198 tasks, avg   5.00 ms, max    14.0 ms
+[CC-Profile]   #46 "load 20"                   9.9% of period,  1198 tasks, avg   4.95 ms, max    14.0 ms
+[CC-Profile]   #47 "load 21"                   9.7% of period,  1198 tasks, avg   4.88 ms, max    14.2 ms
+[CC-Profile]   #48 "load 22"                   9.6% of period,  1197 tasks, avg   4.80 ms, max    14.2 ms
+[CC-Profile]   #49 "load 23"                   9.4% of period,  1197 tasks, avg   4.71 ms, max    15.4 ms
+[CC-Profile]   #50 "load 24"                   8.8% of period,  1197 tasks, avg   4.43 ms, max    14.4 ms
+[CC-Profile]   #38 "load 12"                   8.8% of period,  1199 tasks, avg   4.41 ms, max    30.3 ms
+[CC-Profile]   #33 "load 7"                    8.3% of period,  1199 tasks, avg   4.14 ms, max    28.2 ms
+[CC-Profile]   #31 "load 5"                    7.8% of period,  1199 tasks, avg   3.89 ms, max    26.3 ms
+[CC-Profile]   #36 "load 10"                   6.7% of period,  1200 tasks, avg   3.33 ms, max    27.1 ms
+[CC-Profile]   #10 "dash 1"                    5.7% of period,   600 tasks, avg   5.74 ms, max    15.8 ms
+[CC-Profile]   #11 "dash 2"                    5.6% of period,   600 tasks, avg   5.55 ms, max    15.4 ms
+[CC-Profile]   #30 "load 4"                    5.5% of period,  1200 tasks, avg   2.74 ms, max    22.2 ms
+[CC-Profile]   #12 "dash 3"                    5.3% of period,   600 tasks, avg   5.31 ms, max    14.9 ms
+[CC-Profile]   #13 "dash 4"                    5.3% of period,   601 tasks, avg   5.26 ms, max    12.6 ms
+[CC-Profile]   #37 "load 11"                   4.5% of period,  1201 tasks, avg   2.24 ms, max    25.3 ms
+[CC-Profile]   #40 "load 14"                   3.6% of period,  1201 tasks, avg   1.80 ms, max    24.1 ms
+[CC-Profile]   #34 "load 8"                    2.8% of period,  1201 tasks, avg   1.40 ms, max    11.8 ms
+[CC-Profile] 60s: 30905 tasks, thread busy 235.9%, queue wait avg 4.7 ms / max 638 ms, DROPPED (queue full) 0, worker threads created 0, mode 8 threads (busy % is summed over them)
+[CC-Profile]   #41 "load 15"                  10.4% of period,  1188 tasks, avg   5.25 ms, max    15.6 ms
+[CC-Profile]   #42 "load 16"                  10.3% of period,  1189 tasks, avg   5.19 ms, max    14.7 ms
+[CC-Profile]   #43 "load 17"                  10.3% of period,  1188 tasks, avg   5.19 ms, max    15.8 ms
+[CC-Profile]   #28 "load 2"                   10.2% of period,  1189 tasks, avg   5.16 ms, max    14.1 ms
+[CC-Profile]   #39 "load 13"                  10.0% of period,  1189 tasks, avg   5.05 ms, max    15.7 ms
+[CC-Profile]   #44 "load 18"                  10.0% of period,  1188 tasks, avg   5.04 ms, max    15.7 ms
+[CC-Profile]   #35 "load 9"                   10.0% of period,  1189 tasks, avg   5.04 ms, max    14.1 ms
+[CC-Profile]   #29 "load 3"                    9.9% of period,  1189 tasks, avg   5.01 ms, max    15.8 ms
+[CC-Profile]   #45 "load 19"                   9.9% of period,  1187 tasks, avg   5.01 ms, max    15.9 ms
+[CC-Profile]   #32 "load 6"                    9.9% of period,  1189 tasks, avg   4.97 ms, max    16.5 ms
+[CC-Profile]   #27 "load 1"                    9.8% of period,  1190 tasks, avg   4.94 ms, max    15.8 ms
+[CC-Profile]   #46 "load 20"                   9.7% of period,  1187 tasks, avg   4.93 ms, max    15.9 ms
+[CC-Profile]   #47 "load 21"                   9.7% of period,  1187 tasks, avg   4.91 ms, max    15.8 ms
+[CC-Profile]   #38 "load 12"                   9.7% of period,  1189 tasks, avg   4.90 ms, max   616.5 ms
+[CC-Profile]   #48 "load 22"                   9.5% of period,  1187 tasks, avg   4.79 ms, max    15.7 ms
+[CC-Profile]   #49 "load 23"                   9.4% of period,  1187 tasks, avg   4.75 ms, max    15.7 ms
+[CC-Profile]   #33 "load 7"                    9.1% of period,  1189 tasks, avg   4.60 ms, max   621.0 ms
+[CC-Profile]   #50 "load 24"                   8.7% of period,  1187 tasks, avg   4.39 ms, max    16.2 ms
+[CC-Profile]   #31 "load 5"                    8.5% of period,  1189 tasks, avg   4.31 ms, max   618.5 ms
+[CC-Profile]   #36 "load 10"                   7.8% of period,  1189 tasks, avg   3.92 ms, max   621.8 ms
+[CC-Profile]   #30 "load 4"                    6.7% of period,  1189 tasks, avg   3.36 ms, max   622.7 ms
+[CC-Profile]   #10 "dash 1"                    5.9% of period,   596 tasks, avg   5.89 ms, max    16.0 ms
+[CC-Profile]   #37 "load 11"                   5.8% of period,  1189 tasks, avg   2.92 ms, max   617.6 ms
+[CC-Profile]   #11 "dash 2"                    5.6% of period,   596 tasks, avg   5.61 ms, max    15.8 ms
+[CC-Profile]   #12 "dash 3"                    5.4% of period,   596 tasks, avg   5.40 ms, max    15.4 ms
+[CC-Profile]   #13 "dash 4"                    5.3% of period,   595 tasks, avg   5.32 ms, max    15.9 ms
+[CC-Profile]   #40 "load 14"                   4.7% of period,  1189 tasks, avg   2.39 ms, max   619.4 ms
+[CC-Profile]   #34 "load 8"                    3.9% of period,  1189 tasks, avg   1.95 ms, max   620.2 ms
+[CC-Profile] 60s: 31164 tasks, thread busy 227.7%, queue wait avg 4.2 ms / max 74 ms, DROPPED (queue full) 0, worker threads created 0, mode 8 threads (busy % is summed over them)
+[CC-Profile]   #41 "load 15"                  10.5% of period,  1197 tasks, avg   5.27 ms, max    16.8 ms
+[CC-Profile]   #28 "load 2"                   10.4% of period,  1197 tasks, avg   5.23 ms, max    14.8 ms
+[CC-Profile]   #42 "load 16"                  10.4% of period,  1197 tasks, avg   5.19 ms, max    15.7 ms
+[CC-Profile]   #35 "load 9"                   10.3% of period,  1199 tasks, avg   5.16 ms, max    15.9 ms
+[CC-Profile]   #43 "load 17"                  10.3% of period,  1197 tasks, avg   5.15 ms, max    15.8 ms
+[CC-Profile]   #44 "load 18"                  10.0% of period,  1197 tasks, avg   5.02 ms, max    15.5 ms
+[CC-Profile]   #29 "load 3"                    9.9% of period,  1198 tasks, avg   4.96 ms, max    14.8 ms
+[CC-Profile]   #27 "load 1"                    9.9% of period,  1199 tasks, avg   4.95 ms, max    15.9 ms
+[CC-Profile]   #45 "load 19"                   9.9% of period,  1198 tasks, avg   4.95 ms, max    15.2 ms
+[CC-Profile]   #39 "load 13"                   9.8% of period,  1199 tasks, avg   4.92 ms, max    15.2 ms
+[CC-Profile]   #46 "load 20"                   9.8% of period,  1198 tasks, avg   4.91 ms, max    15.1 ms
+[CC-Profile]   #32 "load 6"                    9.8% of period,  1199 tasks, avg   4.89 ms, max    14.7 ms
+[CC-Profile]   #47 "load 21"                   9.7% of period,  1198 tasks, avg   4.84 ms, max    13.4 ms
+[CC-Profile]   #48 "load 22"                   9.5% of period,  1198 tasks, avg   4.77 ms, max    14.4 ms
+[CC-Profile]   #49 "load 23"                   9.5% of period,  1198 tasks, avg   4.74 ms, max    14.6 ms
+[CC-Profile]   #50 "load 24"                   8.8% of period,  1198 tasks, avg   4.42 ms, max    14.3 ms
+[CC-Profile]   #38 "load 12"                   8.7% of period,  1200 tasks, avg   4.34 ms, max    68.0 ms
+[CC-Profile]   #33 "load 7"                    7.9% of period,  1200 tasks, avg   3.94 ms, max    67.4 ms
+[CC-Profile]   #31 "load 5"                    7.2% of period,  1199 tasks, avg   3.62 ms, max    68.6 ms
+[CC-Profile]   #36 "load 10"                   6.8% of period,  1200 tasks, avg   3.39 ms, max    66.2 ms
+[CC-Profile]   #30 "load 4"                    5.8% of period,  1200 tasks, avg   2.91 ms, max    64.9 ms
+[CC-Profile]   #10 "dash 1"                    5.8% of period,   599 tasks, avg   5.76 ms, max    15.2 ms
+[CC-Profile]   #11 "dash 2"                    5.5% of period,   600 tasks, avg   5.50 ms, max    15.1 ms
+[CC-Profile]   #12 "dash 3"                    5.3% of period,   600 tasks, avg   5.27 ms, max    14.9 ms
+[CC-Profile]   #13 "dash 4"                    4.9% of period,   600 tasks, avg   4.94 ms, max    14.9 ms
+[CC-Profile]   #37 "load 11"                   4.5% of period,  1200 tasks, avg   2.27 ms, max    66.9 ms
+[CC-Profile]   #40 "load 14"                   3.7% of period,  1200 tasks, avg   1.87 ms, max    65.6 ms
+[CC-Profile]   #34 "load 8"                    3.0% of period,  1199 tasks, avg   1.52 ms, max    63.8 ms
+
+# passes x2-x8 (summaries: per-minute totals, load computers' redraws/min range, dash 1 redraws/min)
+== x2
+60s: 31170 tasks, thread busy 327.6%, queue wait avg 6.1 ms / max 40 ms, DROPPED (queue full) 0
+60s: 31135 tasks, thread busy 363.5%, queue wait avg 6.8 ms / max 39 ms, DROPPED (queue full) 0
+60s: 31159 tasks, thread busy 358.2%, queue wait avg 6.7 ms / max 64 ms, DROPPED (queue full) 0
+  load: 1198-1199 redraws/min
+  load: 1196-1199 redraws/min
+  load: 1197-1200 redraws/min
+  dash1 599   dash1 598   dash1 599 
+== x3
+60s: 24028 tasks, thread busy 381.0%, queue wait avg 9.3 ms / max 412 ms, DROPPED (queue full) 0
+60s: 31144 tasks, thread busy 493.0%, queue wait avg 9.2 ms / max 44 ms, DROPPED (queue full) 0
+60s: 31140 tasks, thread busy 485.3%, queue wait avg 9.1 ms / max 41 ms, DROPPED (queue full) 0
+  load: -1199 redraws/min
+  load: 919-925 redraws/min
+  load: 1194-1200 redraws/min
+  load: 1196-1199 redraws/min
+  dash1 462   dash1 598   dash1 598 
+== x4
+60s: 31006 tasks, thread busy 619.9%, queue wait avg 11.7 ms / max 65 ms, DROPPED (queue full) 0
+60s: 31029 tasks, thread busy 611.4%, queue wait avg 11.6 ms / max 48 ms, DROPPED (queue full) 0
+60s: 30937 tasks, thread busy 627.5%, queue wait avg 11.9 ms / max 50 ms, DROPPED (queue full) 0
+  load: 1150-1200 redraws/min
+  load: 1161-1199 redraws/min
+  load: 1147-1199 redraws/min
+  dash1 585   dash1 585   dash1 582 
+== x6
+60s: 24741 tasks, thread busy 778.4%, queue wait avg 20.2 ms / max 85 ms, DROPPED (queue full) 0
+60s: 24370 tasks, thread busy 787.0%, queue wait avg 20.8 ms / max 389 ms, DROPPED (queue full) 0
+60s: 24608 tasks, thread busy 784.3%, queue wait avg 20.4 ms / max 77 ms, DROPPED (queue full) 0
+  load: 630-1197 redraws/min
+  load: 597-1192 redraws/min
+  load: 600-1199 redraws/min
+  dash1 410   dash1 398   dash1 401 
+== x8
+60s: 19450 tasks, thread busy 798.0%, queue wait avg 32.5 ms / max 96 ms, DROPPED (queue full) 0
+60s: 18991 tasks, thread busy 799.1%, queue wait avg 33.9 ms / max 92 ms, DROPPED (queue full) 0
+60s: 19178 tasks, thread busy 798.4%, queue wait avg 33.3 ms / max 83 ms, DROPPED (queue full) 0
+  load: 596-1178 redraws/min
+  load: 595-1167 redraws/min
+  load: 596-1180 redraws/min
+  dash1 398   dash1 398   dash1 397 

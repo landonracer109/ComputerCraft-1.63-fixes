@@ -122,6 +122,9 @@ lost-wakeup fix.
 
 #### Recommendation for servers: turn on `-Dcc.reuseWorker=true`
 
+All numbers below are from single-player on an AMD Ryzen Threadripper 1920X (12 cores, 3.5 GHz
+base) with Java 1.8.0_51. Faster or slower CPUs move the limits, but not the comparisons.
+
 A load test pushed a single-player world to the point where the computer thread can't keep up,
 then compared both schedulers under exactly the same load. The load was a 16-turtle quarry, 4
 dashboards and 8 computers running adjustable CPU work
@@ -140,6 +143,50 @@ the limit, but doesn't remove it. Everything still runs on one thread.
 
 "Dropped" means ComputerCraft threw events away because a computer already had 256 waiting. In
 game that shows up as programs missing timer, rednet or turtle events, not just running slowly.
+
+A second test used **monitor-heavy** load, the kind reactor screens and dashboards create:
+- 24 computers, each redrawing a 57×24 monitor 20 times a second;
+- 4 dashboards;
+- no quarry.
+
+Each step multiplies the monitor work (see [`tests/ingame/mload`](tests/ingame/mload)). Each cell
+shows the load computers' redraws a minute (out of 1,200), the dashboards' redraws (out of 600),
+and the average wait:
+
+| Monitor work | Original scheduler | `-Dcc.reuseWorker=true` |
+|---|---|---|
+| x1 | all served, 11 ms, **45% busy** | all served, 7 ms, **30% busy** |
+| x2 | all served, 15 ms, 62% busy | all served, 11 ms, 46% busy |
+| x3 | all served, 19 ms, 78% busy | all served, 15 ms, 60% busy |
+| x4 | **edge**: 1,134–1,200 / 572–580, 23 ms, 93% busy | all served, 19 ms, 75% busy |
+| x5 | past the edge | **edge**: 1,083–1,200 / 561–576, 23 ms, 91% busy |
+| x6 | past: 597–1,199 / 398–428, 37 ms | past: 654–1,200 / 431–454, 28 ms, 14% more work done |
+
+Here the reused worker needs about **a third less of the thread** for the same work, and handles
+one step more before falling behind.
+
+**Which setting for which programs:**
+
+| Most of the server's computer load is… | Example | Best setting |
+|---|---|---|
+| Turtles | quarries, farms | `-Dcc.reuseWorker=true` (one 16-turtle quarry went from ~57% to ~35% of the thread) |
+| Monitors and peripherals | reactor screens, dashboards | `-Dcc.reuseWorker=true` |
+| Heavy pure-Lua work | big calculations, pathfinding | parallel workers (experimental, see below) |
+
+**Experimental: several computers at once.** The
+[`experimental-parallel`](../../tree/experimental-parallel) branch runs computers on several
+threads, with `-Dcc.threads=N`.
+- Only pure Lua runs in parallel. Everything that touches the world, files, peripherals or other
+  computers still happens one computer at a time, so programs behave exactly as before.
+- For pure-Lua load it handled **3.5× the load** of the original.
+- For monitor-heavy load it reached its limit at the same point as the original. The reused
+  worker does better there.
+
+It isn't in a release. The branch's `PARALLEL.md` has the design, all measurements and what's
+left to do.
+
+Turtle actions (digging, moving) also do their real work on Minecraft's main server thread. Many
+busy turtles cost server TPS whatever the scheduler setting.
 
 ## Installing
 

@@ -1,0 +1,75 @@
+-- mload: monitor load for the scheduler test (stands in for reactor screens and dashboards).
+-- Redraws the whole attached monitor <rate> times a second: for every line, set the cursor,
+-- set a colour and write, so almost all of its time is spent in monitor (peripheral) calls.
+-- load.cfg: line 1 = extra Lua work units per redraw (0 = none),
+--           line 2 = redraws per second (1-20, 0 = off),
+--           line 3 = passes: how many times each redraw draws the whole monitor (default 1).
+-- Settings are re-read about once a second, so the load can be changed while it runs.
+local units, rate, passes = 0, 20, 1
+local function readCfg()
+  local f = fs.open("load.cfg", "r")
+  if f then
+    units = tonumber(f.readLine()) or units
+    rate = tonumber(f.readLine()) or rate
+    passes = tonumber(f.readLine()) or passes
+    f.close()
+  end
+  if rate < 0 then rate = 0 elseif rate > 20 then rate = 20 end
+  if passes < 1 then passes = 1 end
+end
+
+local mon
+for _, name in ipairs(peripheral.getNames()) do
+  if peripheral.getType(name) == "monitor" then
+    mon = peripheral.wrap(name)
+    break
+  end
+end
+if not mon then
+  print("mload: no monitor attached")
+  return
+end
+mon.setTextScale(0.5)
+local w, h = mon.getSize()
+local cols = { colours.white, colours.yellow, colours.lime, colours.lightBlue, colours.orange, colours.red }
+local states = { "active", "idle", "cooling", "heating" }
+local frame, x = 0, 0
+
+local function status(text)
+  term.setCursorPos(1, 1)
+  term.clearLine()
+  term.write(text)
+end
+
+readCfg()
+while true do
+  if rate == 0 then
+    -- off: just check the settings once a second
+    sleep(1)
+    readCfg()
+    status(("mload: %dx%d monitor, off"):format(w, h))
+  else
+    local t = os.startTimer(1 / rate)
+    repeat
+      local _, id = os.pullEvent("timer")
+    until id == t
+    for i = 1, units do
+      x = (x * 31 + i) % 1000003
+    end
+    frame = frame + 1
+    mon.setBackgroundColour(colours.black)
+    for pass = 1, passes do
+      for y = 1, h do
+        mon.setCursorPos(1, y)
+        mon.setTextColour(cols[(y + frame) % #cols + 1])
+        local line = string.format("%3d reactor %2d  %-8s %6d RF/t %5.1f%% ", y, y % 16,
+          states[(y + frame) % 4 + 1], (frame * 37 + y * 101) % 99999, ((frame + y) * 7) % 1000 / 10)
+        mon.write(line:rep(math.ceil(w / #line)):sub(1, w))
+      end
+    end
+    if frame % rate == 0 then
+      readCfg()
+      status(("mload: %dx%d monitor, %d/s x%d, %d units"):format(w, h, rate, passes, units))
+    end
+  end
+end

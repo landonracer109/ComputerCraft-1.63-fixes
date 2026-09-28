@@ -2,6 +2,56 @@
 
 Newest first. Each release is a drop-in replacement for `mods/ComputerCraft1.63+tomo1.jar`.
 
+## Monitor load test and experimental parallel scheduler (2026-09-28, no new release)
+
+Measurements and an experimental branch. `fixes-1` is unchanged.
+
+**Monitor-heavy load test.** The setup, identical for all three schedulers:
+- single player on an AMD Ryzen Threadripper 1920X;
+- 24 computers running [`mload`](tests/ingame/mload), each redrawing its own 57×24 advanced
+  monitor 20 times a second;
+- 4 dashboards;
+- no quarry, because one lost its turtles to a WorldEdit `//regen` and the quarry's load swings
+  too much anyway.
+
+The work per redraw was multiplied step by step, 3 minutes per step. The raw reports are in
+[`tests/results`](tests/results), in the `2026-09-28-monitors-*` files.
+
+Load computers' redraws a minute (out of 1,200) / dashboards' (out of 600) / average wait:
+
+| Step | Original | Reused worker | 8 parallel workers (experimental) |
+|---|---|---|---|
+| x1 | all / all / 11 ms (45% busy) | all / all / 7 ms (30% busy) | all / all / 4 ms |
+| x2 | all / all / 15 ms (62%) | all / all / 11 ms (46%) | all / all / 7 ms |
+| x3 | 1,187+ / 595+ / 19 ms (78%) | all / all / 15 ms (60%) | all / all / 9 ms |
+| x4 | **edge**: 1,134+ / 572–580 / 23 ms (93%) | all / 596+ / 19 ms (75%) | **edge**: 1,147+ / 582–585 / 12 ms |
+| x5 | — | **edge**: 1,083+ / 561–576 / 23 ms (91%) | — |
+| x6 | past: 597+ / 398–428 / 37 ms (100%) | past: 654+ / 431–454 / 28 ms (96%) | past: 597+ / 398–410 / 20 ms |
+| x8 | — | — | past: 595+ / 397–398 / 33 ms |
+
+At x6, the minute's total events were about 24,800 for the original, 28,200 for the reused worker
+and 24,600 for 8 parallel workers. Nothing was dropped in any run: `mload` waits for its own timer,
+so an overloaded computer draws less often (down to 10 a second) instead of piling up events.
+Every frame drawn was complete and correct, which was checked on screenshots.
+
+**Conclusion:** for turtles, monitors and peripherals, the reused worker is the best setting. The
+parallel scheduler only helps pure Lua. For monitor-heavy load, its lock handoffs cost as much as
+reusing workers saves.
+
+**Experimental parallel scheduler** (`-Dcc.threads=N`), on the
+[`experimental-parallel`](../../tree/experimental-parallel) branch, not released:
+- Runs pure Lua from several computers at once. Everything else stays one computer at a time.
+- Pure-Lua load test in game: handled 80,000 `burn` units without falling behind or dropping
+  anything. That's 3.5× where the original fell over (23,000) and 2.5× where the reused worker did
+  (32,000).
+- Headless benchmark of real ComputerCraft computers: compute-heavy load up to 3.2× the original.
+  No gain for load made of API calls.
+- A test that caught a real bug: starting 24 new computers at once gave 15 duplicate IDs when only
+  API calls were locked. The final design locks everything except pure Lua, and gives 24 unique IDs.
+
+The branch's `PARALLEL.md` has the design, all results and two ideas for helping API-heavy
+programs.
+
 ## Load test at the limit (2026-09-28, no new release)
 
 This entry is measurements only. `fixes-1` is unchanged, and the test ran on the `fixes-1` jar with
