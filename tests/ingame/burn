@@ -1,0 +1,27 @@
+-- burn: artificial load for the scheduler test (stands in for players' busy programs).
+-- Every event it does <units> steps of Lua work, <rate> times a second (max 20, one per game tick).
+-- Settings are read from load.cfg (line 1: units, line 2: rate) about once a second, so the load
+-- can be changed while it runs. units 0 = idle.
+local x, units, rate = 0, 0, 20
+local function readCfg()
+  local f = fs.open("load.cfg", "r")
+  if f then
+    units = tonumber(f.readLine()) or units
+    rate = tonumber(f.readLine()) or rate
+    f.close()
+  end
+  if rate < 1 then rate = 1 elseif rate > 20 then rate = 20 end
+end
+readCfg()
+local n = 0
+while true do
+  local t = os.startTimer(1 / rate)
+  repeat local _, id = os.pullEvent("timer") until id == t
+  for i = 1, units do x = (x * 31 + i) % 1000003 end
+  n = n + 1
+  if n % rate == 0 then
+    readCfg()
+    term.setCursorPos(1, 1) term.clearLine()
+    term.write(("burn: %d units x %d/s"):format(units, rate))
+  end
+end

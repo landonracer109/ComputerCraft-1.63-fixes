@@ -1,0 +1,3 @@
+# Keep the reactor program byte-for-byte as it is in the jar (CRLF line endings)
+src/lua/* -text
+*.sh text eol=lf

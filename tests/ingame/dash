@@ -1,0 +1,41 @@
+-- dash: stand-in for another player's busy dashboard (load test only).
+-- Fully redraws the attached monitor (or the computer's own screen) N times a second
+-- with changing, coloured text, like a status screen that redraws everything each update.
+-- Usage: dash [redraws per second, default 10]
+
+local rate = tonumber(({ ... })[1]) or 10
+local target = term
+for _, name in ipairs(peripheral.getNames()) do
+  if peripheral.getType(name) == "monitor" then
+    target = peripheral.wrap(name)
+    break
+  end
+end
+if target.setTextScale then target.setTextScale(0.5) end
+local w, h = target.getSize()
+local cols = { colours.white, colours.yellow, colours.lime, colours.lightBlue, colours.orange, colours.red }
+local frame = 0
+
+local function redraw()
+  frame = frame + 1
+  target.setBackgroundColour(colours.black)
+  target.clear()
+  for y = 1, h do
+    target.setCursorPos(1, y)
+    target.setTextColour(cols[(y + frame) % #cols + 1])
+    local line = string.format("%3d  lane %2d  status %-8s  %6d RF/t  %5.1f%%  ", y, y % 16,
+      ({ "mining", "home", "waiting", "service" })[(y + frame) % 4 + 1],
+      (frame * 37 + y * 101) % 99999, ((frame + y) * 7) % 1000 / 10)
+    target.write(line:rep(math.ceil(w / #line)):sub(1, w))
+  end
+end
+
+print("dash: redrawing " .. w .. "x" .. h .. " at " .. rate .. "/s. Ctrl+T to stop.")
+local timer = os.startTimer(1 / rate)
+while true do
+  local event, id = os.pullEvent()
+  if event == "timer" and id == timer then
+    redraw()
+    timer = os.startTimer(1 / rate)
+  end
+end
