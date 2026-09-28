@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# Builds the release jar from the original ComputerCraft1.63+tomo1.jar. See BUILDING.md.
+# Builds the jar from the original ComputerCraft1.63+tomo1.jar. See BUILDING.md.
+# On the experimental-parallel branch this also includes the parallel scheduler (-Dcc.threads=N):
+# see PARALLEL.md.
 #
 # Needs, in tools/ (not in the repo):
 #   ecj.jar              Eclipse compiler (any version that can target Java 6)
@@ -11,28 +13,42 @@
 # Usage: ./build.sh [output.jar]
 set -euo pipefail
 cd "$(dirname "$0")"
-OUT="${1:-build/ComputerCraft1.63+tomo1+fixes.jar}"
+OUT="${1:-build/ComputerCraft1.63+tomo1+fixes-parallel.jar}"
 T=tools
 ORIG="$T/ComputerCraft1.63+tomo1.jar"
 SEP=":"; case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) SEP=";";; esac
-CP="build/widened${SEP}$T/mc-1.6.4-srg.jar${SEP}$T/forge-srg.jar${SEP}$T/lwjgl.jar${SEP}$ORIG"
+ASM="$T/asm.jar${SEP}$T/asm-tree.jar"
 B=build/classes
+CP="$B${SEP}build/widened${SEP}$T/mc-1.6.4-srg.jar${SEP}$T/forge-srg.jar${SEP}$T/lwjgl.jar${SEP}$ORIG"
 rm -rf build/classes build/tools build/orig build/widened && mkdir -p "$B" build/tools build/orig build/widened
 
+java -jar "$T/ecj.jar" -1.6 -nowarn -cp "$ASM" -d build/tools \
+  patchers/AccessWiden.java patchers/TileMonitorPatch.java patchers/JarPatch.java \
+  patchers/LuaThreadPatch.java patchers/LuaMachinePatch.java
+
 # 0. Compile-time copy of TileEntity with worldObj (field_70331_k) public, as Forge makes it in-game
-java -jar "$T/ecj.jar" -1.6 -nowarn -cp "$T/asm.jar${SEP}$T/asm-tree.jar" -d build/tools patchers/AccessWiden.java
-java -cp "build/tools${SEP}$T/asm.jar${SEP}$T/asm-tree.jar" AccessWiden "$T/mc-1.6.4-srg.jar" build/widened net/minecraft/tileentity/TileEntity.field_70331_k
+java -cp "build/tools${SEP}$ASM" AccessWiden "$T/mc-1.6.4-srg.jar" build/widened net/minecraft/tileentity/TileEntity.field_70331_k
 
-# 1. Java sources: Terminal (fixes 2, 5), TileEntityMonitorRenderer (fix 1), ComputerThread (fix 6)
-java -jar "$T/ecj.jar" -1.6 -nowarn -cp "$CP" -d "$B" \
-  src/patched/Terminal.java src/patched/TileEntityMonitorRenderer.java src/patched/ComputerThread.java
-
-# 2. TileMonitor (fix 4): bytecode patch of the original class
-java -jar "$T/ecj.jar" -1.6 -nowarn -cp "$T/asm.jar${SEP}$T/asm-tree.jar" -d build/tools patchers/TileMonitorPatch.java patchers/JarPatch.java
+# 1. Bytecode patches of original classes
 M=dan200/computercraft/shared/peripheral/monitor
-(cd build/orig && unzip -q -o "../../$ORIG" "$M/TileMonitor.class")
-mkdir -p "$B/$M"
-java -cp "build/tools${SEP}$T/asm.jar${SEP}$T/asm-tree.jar" TileMonitorPatch "build/orig/$M/TileMonitor.class" "$B/$M/TileMonitor.class"
+L=dan200/computercraft/core/lua
+J=org/luaj/vm2
+(cd build/orig && unzip -q -o "../../$ORIG" "$M/TileMonitor.class" "$J/LuaThread.class" "$J/LuaThread\$State.class" \
+  "$L/LuaJLuaMachine.class" "$L/LuaJLuaMachine\$2.class" "$L/LuaJLuaMachine\$2\$1.class")
+mkdir -p "$B/$M" "$B/$J" "$B/$L"
+#    fix 4: TileMonitor
+java -cp "build/tools${SEP}$ASM" TileMonitorPatch "build/orig/$M/TileMonitor.class" "$B/$M/TileMonitor.class"
+#    parallel: LuaJ's running coroutine per Java thread, and the world lock hooks in the Lua machine
+java -cp "build/tools${SEP}$ASM" LuaThreadPatch "build/orig/$J/LuaThread.class" "build/orig/$J/LuaThread\$State.class" "$B/$J"
+java -cp "build/tools${SEP}$ASM" LuaMachinePatch "build/orig/$L/LuaJLuaMachine.class" "build/orig/$L/LuaJLuaMachine\$2.class" \
+  "build/orig/$L/LuaJLuaMachine\$2\$1.class" "$B/$L"
+
+# 2. Java sources: Terminal (fixes 2, 5), TileEntityMonitorRenderer (fix 1), ComputerThread (fix 6
+#    and the parallel scheduler), WorldLock and LuaThreadLocals (parallel). Compiled against the
+#    patched classes above.
+java -jar "$T/ecj.jar" -1.6 -nowarn -cp "$CP" -d "$B" \
+  src/patched/Terminal.java src/patched/TileEntityMonitorRenderer.java src/patched/ComputerThread.java \
+  src/patched/WorldLock.java src/patched/LuaThreadLocals.java
 
 # 3. Put it together: replace changed classes and the reactor program, drop the original
 #    ComputerThread's second anonymous class (the rewrite doesn't have it)

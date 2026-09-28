@@ -25,6 +25,9 @@ import java.util.concurrent.LinkedBlockingQueue;
  *                          ones, up to 40) with their longest task.
  *  -Dcc.reuseWorker=true   reuse one long-lived worker thread instead of creating a new thread for
  *                          every task. Only a worker that has to be stopped is replaced.
+ *  -Dcc.threads=N          EXPERIMENTAL, N > 1: run computers on N long-lived worker threads (see
+ *                          Pool below and dan200.computercraft.core.lua.WorldLock). Includes what
+ *                          cc.reuseWorker does; cc.reuseWorker is ignored.
  */
 public class ComputerThread {
     private static Object m_lock = new Object();
@@ -76,7 +79,7 @@ public class ComputerThread {
     // queueTask runs on many threads; the original silently drops tasks when a computer has 256 queued
     private static final java.util.concurrent.atomic.AtomicInteger s_dropped = new java.util.concurrent.atomic.AtomicInteger();
 
-    private static void record(Task task, long waitNanos, long runNanos, boolean timedOut) {
+    private static synchronized void record(Task task, long waitNanos, long runNanos, boolean timedOut) {
         if (!PROFILE) {
             return;
         }
@@ -116,7 +119,7 @@ public class ComputerThread {
         sb.append(String.format("[CC-Profile] %.0fs: %d tasks, thread busy %.1f%%, queue wait avg %.1f ms / max %.0f ms, DROPPED (queue full) %d, worker threads created %d, mode %s%n",
             period / 1e9, s_tasks, 100.0 * s_runNanos / period,
             s_tasks == 0 ? 0.0 : s_waitNanos / 1e6 / s_tasks, s_maxWaitNanos / 1e6,
-            s_dropped.getAndSet(0), s_threadsCreated, REUSE_WORKER ? "reuse-worker" : "thread-per-task"));
+            s_dropped.getAndSet(0), s_threadsCreated, THREADS > 1 ? THREADS + " threads (busy % is summed over them)" : REUSE_WORKER ? "reuse-worker" : "thread-per-task"));
         ArrayList<ComputerStats> list = new ArrayList<ComputerStats>(s_stats.values());
         java.util.Collections.sort(list, new java.util.Comparator<ComputerStats>() {
             public int compare(ComputerStats a, ComputerStats b) {
@@ -276,7 +279,245 @@ public class ComputerThread {
         }
     }
 
+    // ---- parallel mode (-Dcc.threads=N, N > 1) ----
+
+    private static final int THREADS = Math.max(1, Integer.getInteger("cc.threads", 1));
+
+    /**
+     * Runs computers on N worker threads. Each computer's tasks still run one at a time and in
+     * order; different computers can run at once. Only computers' pure Lua runs in parallel:
+     * dan200.computercraft.core.lua.WorldLock keeps everything else (every task's Java code and every
+     * API call: world, files, peripherals, rednet) one computer at a time, as in the original. A
+     * watchdog gives each task the original's 5 s + 1.25 s + 1.25 s before aborting, not counting
+     * time spent waiting for the world lock.
+     */
+    private static final class Pool {
+        static final Object LOCK = new Object();
+        static final java.util.LinkedList<LinkedBlockingQueue<Task>> READY = new java.util.LinkedList<LinkedBlockingQueue<Task>>();
+        static final java.util.Set<LinkedBlockingQueue<Task>> SCHEDULED = new java.util.HashSet<LinkedBlockingQueue<Task>>();
+        static final java.util.List<PoolWorker> WORKERS = new ArrayList<PoolWorker>();
+        static boolean s_running, s_stopped;
+        static Thread s_watchdog;
+
+
+        static void start() {
+            synchronized (LOCK) {
+                s_stopped = false;
+                if (s_running) {
+                    return;
+                }
+                s_running = true;
+                for (int i = 0; i < THREADS; i++) {
+                    WORKERS.add(new PoolWorker());
+                }
+                s_watchdog = new Thread(new Runnable() {
+                    public void run() {
+                        watchdog();
+                    }
+                }, "Computer Watchdog");
+                s_watchdog.setDaemon(true);
+                s_watchdog.start();
+            }
+        }
+
+        static void stop() {
+            synchronized (LOCK) {
+                if (!s_running) {
+                    return;
+                }
+                s_stopped = true;
+                s_running = false;
+                LOCK.notifyAll();
+                WORKERS.clear();
+                s_watchdog.interrupt();
+            }
+        }
+
+        static void queue(Task task, Computer computer) {
+            Object key = computer == null ? m_defaultQueue : computer;
+            synchronized (LOCK) {
+                LinkedBlockingQueue<Task> queue = m_computerTasks.get(key);
+                if (queue == null) {
+                    queue = new LinkedBlockingQueue<Task>(256);
+                    m_computerTasks.put(key, queue);
+                }
+                if (!queue.offer(PROFILE ? new TimedTask(task) : task)) {
+                    s_dropped.incrementAndGet();
+                }
+                if (SCHEDULED.add(queue)) {
+                    READY.addLast(queue);
+                    LOCK.notify();
+                }
+            }
+        }
+
+        static void watchdog() {
+            while (true) {
+                try {
+                    Thread.sleep(50L);
+                } catch (InterruptedException e) {
+                    // re-check below
+                }
+                ArrayList<PoolWorker> workers;
+                synchronized (LOCK) {
+                    if (s_stopped) {
+                        return;
+                    }
+                    workers = new ArrayList<PoolWorker>(WORKERS);
+                }
+                for (PoolWorker w : workers) {
+                    w.check();
+                }
+            }
+        }
+    }
+
+    private static final class PoolWorker implements Runnable {
+        final Thread thread;
+        // the task being run, guarded by this
+        private Task m_task;
+        private long m_started;
+        private int m_stage;
+        private boolean m_dead;
+
+        PoolWorker() {
+            thread = new Thread(this, "Computer Worker");
+            thread.setDaemon(true);
+            synchronized (ComputerThread.class) {
+                s_threadsCreated++;
+            }
+            thread.start();
+        }
+
+        private boolean isDead() {
+            synchronized (this) {
+                return m_dead;
+            }
+        }
+
+        public void run() {
+            while (true) {
+                LinkedBlockingQueue<Task> queue;
+                Task task;
+                synchronized (Pool.LOCK) {
+                    while (Pool.READY.isEmpty() || isDead()) {
+                        if (Pool.s_stopped || isDead()) {
+                            return;
+                        }
+                        try {
+                            Pool.LOCK.wait();
+                        } catch (InterruptedException e) {
+                            // re-check
+                        }
+                    }
+                    if (Pool.s_stopped) {
+                        return;
+                    }
+                    queue = Pool.READY.removeFirst();
+                    task = queue.poll();
+                }
+                Computer owner = task == null ? null : task.getOwner();
+                Object token = owner != null ? owner : m_defaultQueue;
+                long started = System.nanoTime();
+                boolean timedOut = false;
+                try {
+                    if (task != null) {
+                        synchronized (this) {
+                            m_task = task;
+                            m_started = started;
+                            m_stage = 0;
+                        }
+                        try {
+                            dan200.computercraft.core.lua.WorldLock.beginTask(token);
+                            task.execute();
+                        } catch (ThreadDeath d) {
+                            throw d;
+                        } catch (Throwable e) {
+                            System.out.println("computercraft: Error running task.");
+                            e.printStackTrace();
+                        }
+                    }
+                } finally {
+                    synchronized (this) {
+                        timedOut = m_stage > 0;
+                        m_task = null;
+                    }
+                    dan200.computercraft.core.lua.WorldLock.endTask(token);
+                    synchronized (Pool.LOCK) {
+                        if (queue.isEmpty()) {
+                            Pool.SCHEDULED.remove(queue);
+                        } else {
+                            Pool.READY.addLast(queue);
+                            Pool.LOCK.notify();
+                        }
+                    }
+                }
+                if (task != null) {
+                    long waited = task instanceof TimedTask ? started - ((TimedTask) task).queuedAt : 0L;
+                    record(task, waited, System.nanoTime() - started, timedOut);
+                }
+            }
+        }
+
+        /** Called by the watchdog: the original's 5 s soft abort, +1.25 s hard abort, +1.25 s stop. */
+        @SuppressWarnings("deprecation")
+        void check() {
+            Task task;
+            long started;
+            int stage;
+            synchronized (this) {
+                task = m_task;
+                if (task == null || m_dead) {
+                    return;
+                }
+                started = m_started;
+                stage = m_stage;
+            }
+            Computer owner = task.getOwner();
+            long ms = (System.nanoTime() - started - dan200.computercraft.core.lua.WorldLock.waitedNanos(owner != null ? owner : m_defaultQueue)) / 1000000L;
+            if (stage == 0 && ms >= 5000L) {
+                if (setStage(task, 1) && owner != null) {
+                    owner.abort(false);
+                }
+            } else if (stage == 1 && ms >= 6250L) {
+                if (setStage(task, 2) && owner != null) {
+                    owner.abort(true);
+                }
+            } else if (stage == 2 && ms >= 7500L) {
+                if (!setStage(task, 3)) {
+                    return;
+                }
+                // Stuck for good: stop it like the original, free the world lock it may hold, and
+                // replace the worker so the other computers keep running.
+                synchronized (this) {
+                    m_dead = true;
+                }
+                synchronized (Pool.LOCK) {
+                    Pool.WORKERS.remove(this);
+                    if (!Pool.s_stopped) {
+                        Pool.WORKERS.add(new PoolWorker());
+                    }
+                }
+                dan200.computercraft.core.lua.WorldLock.forceRelease(owner != null ? owner : m_defaultQueue);
+                thread.interrupt();
+                thread.stop();
+            }
+        }
+
+        private synchronized boolean setStage(Task task, int stage) {
+            if (m_task != task) {
+                return false;
+            }
+            m_stage = stage;
+            return true;
+        }
+    }
+
     public static void start() {
+        if (THREADS > 1) {
+            Pool.start();
+            return;
+        }
         synchronized (m_lock) {
             if (m_running) {
                 m_stopped = false;
@@ -356,6 +597,10 @@ public class ComputerThread {
     }
 
     public static void stop() {
+        if (THREADS > 1) {
+            Pool.stop();
+            return;
+        }
         synchronized (m_lock) {
             if (m_running) {
                 m_stopped = true;
@@ -365,6 +610,10 @@ public class ComputerThread {
     }
 
     public static void queueTask(Task _task, Computer computer) {
+        if (THREADS > 1) {
+            Pool.queue(_task, computer);
+            return;
+        }
         Object queueObject = computer;
         if (queueObject == null) {
             queueObject = m_defaultQueue;

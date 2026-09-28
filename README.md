@@ -1,5 +1,10 @@
 # ComputerCraft 1.63 fixes
 
+> **This is the `experimental-parallel` branch.** It adds an optional parallel scheduler
+> (`-Dcc.threads=N`) on top of `fixes-1`. See [PARALLEL.md](PARALLEL.md) for the design, the results and
+> why it is not in a release. For servers, use the `fixes-1` release from `main` with
+> `-Dcc.reuseWorker=true`.
+
 Crash and performance fixes for **ComputerCraft 1.63** (the `1.63+tomo1` build used by the
 [TechIt-ng](https://github.com/tomodachi94/tech-it) modpack, Minecraft 1.6.4 / Forge 9.11.1.965).
 

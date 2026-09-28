@@ -1,0 +1,54 @@
+# Headless matrix, final parallel design (task-level world lock, fair ticket queue).
+# CPU: AMD Ryzen Threadripper 1920X 12-Core Processor, 12 cores / 24 threads, 3500 MHz base; Java 1.8.0_51; 24 computers, 30 s per run.
+# avg_mhz = actual average clock during the run. events_per_s: all computers together (max 480 = 24 x 20).
+# ok/wrong = checksums of every computer's Lua results recomputed in Java; missing = computers that never reported.
+mode|program|computers|units|events_per_s|per_computer|min|max|ok|wrong|missing|avg_mhz
+original|compute|24|10000|420.0|17.50|345|570|24|0|0|3389
+reuse worker|compute|24|10000|423.5|17.65|365|580|24|0|0|3334
+2 threads|compute|24|10000|432.8|18.03|525|545|24|0|0|3303
+4 threads|compute|24|10000|439.7|18.32|545|555|24|0|0|3296
+6 threads|compute|24|10000|439.9|18.33|550|550|24|0|0|3298
+8 threads|compute|24|10000|439.3|18.30|545|550|24|0|0|3275
+12 threads|compute|24|10000|433.0|18.04|540|545|24|0|0|3312
+16 threads|compute|24|10000|447.7|18.65|555|560|24|0|0|3317
+original|compute|24|20000|240.7|10.03|260|430|24|0|0|3274
+reuse worker|compute|24|20000|259.2|10.80|275|505|24|0|0|3245
+2 threads|compute|24|20000|398.3|16.60|345|545|24|0|0|3233
+4 threads|compute|24|20000|429.7|17.90|495|545|24|0|0|3245
+6 threads|compute|24|20000|438.8|18.28|545|550|24|0|0|3249
+8 threads|compute|24|20000|433.2|18.05|540|545|24|0|0|3233
+12 threads|compute|24|20000|431.2|17.97|535|540|24|0|0|3276
+16 threads|compute|24|20000|440.5|18.35|545|555|24|0|0|3225
+original|compute|24|40000|135.2|5.63|145|185|24|0|0|3283
+reuse worker|compute|24|40000|136.3|5.68|145|195|24|0|0|3219
+2 threads|compute|24|40000|235.8|9.83|245|415|24|0|0|3173
+4 threads|compute|24|40000|363.3|15.14|305|545|24|0|0|3215
+6 threads|compute|24|40000|372.1|15.50|320|540|24|0|0|3189
+8 threads|compute|24|40000|415.8|17.32|385|550|24|0|0|3244
+12 threads|compute|24|40000|426.3|17.76|480|550|24|0|0|3212
+16 threads|compute|24|40000|428.0|17.83|390|555|24|0|0|3161
+original|dash|24|10000|322.3|13.43|285|560|24|0|0|3249
+reuse worker|dash|24|10000|395.3|16.47|320|560|24|0|0|3263
+2 threads|dash|24|10000|395.1|16.46|335|555|24|0|0|3263
+4 threads|dash|24|10000|366.5|15.27|310|555|24|0|0|3256
+6 threads|dash|24|10000|369.2|15.38|310|565|24|0|0|3269
+8 threads|dash|24|10000|385.7|16.07|330|570|24|0|0|3265
+12 threads|dash|24|10000|382.8|15.95|315|565|24|0|0|3241
+16 threads|dash|24|10000|390.5|16.27|325|565|24|0|0|3269
+original|dash|24|20000|223.6|9.32|230|345|24|0|0|3230
+reuse worker|dash|24|20000|226.7|9.44|245|395|24|0|0|3215
+2 threads|dash|24|20000|224.0|9.33|235|380|24|0|0|3246
+4 threads|dash|24|20000|223.6|9.32|230|365|24|0|0|3236
+6 threads|dash|24|20000|238.1|9.92|250|450|24|0|0|3262
+8 threads|dash|24|20000|232.9|9.71|245|430|24|0|0|3248
+12 threads|dash|24|20000|231.0|9.63|250|405|24|0|0|3255
+16 threads|dash|24|20000|240.5|10.02|255|425|24|0|0|3258
+original|dash|24|40000|122.5|5.10|140|180|24|0|0|3234
+reuse worker|dash|24|40000|124.6|5.19|140|180|24|0|0|3246
+2 threads|dash|24|40000|136.0|5.67|145|190|24|0|0|3270
+4 threads|dash|24|40000|134.2|5.59|140|185|24|0|0|3260
+6 threads|dash|24|40000|123.2|5.13|140|175|24|0|0|3281
+8 threads|dash|24|40000|130.6|5.44|140|185|24|0|0|3246
+12 threads|dash|24|40000|132.7|5.53|145|195|24|0|0|3268
+16 threads|dash|24|40000|134.6|5.61|140|190|24|0|0|3279
+DONE

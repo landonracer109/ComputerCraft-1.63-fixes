@@ -1,0 +1,303 @@
+# 8 parallel workers, in-game pure-Lua load: quarry + 4 dashboards + 8 burn computers at 23,000 units (the original scheduler's limit). Raw reports.
+[CC-Profile] 60s: 29083 tasks, thread busy 207.9%, queue wait avg 3.6 ms / max 96 ms, DROPPED (queue full) 0, worker threads created 0, mode 8 threads (busy % is summed over them)
+[CC-Profile]   #27 "load 1"                   17.5% of period,  1196 tasks, avg   8.80 ms, max    49.4 ms
+[CC-Profile]   #28 "load 2"                   17.4% of period,  1196 tasks, avg   8.72 ms, max    40.4 ms
+[CC-Profile]   #29 "load 3"                   16.7% of period,  1198 tasks, avg   8.38 ms, max    43.3 ms
+[CC-Profile]   #33 "load 7"                   16.6% of period,  1199 tasks, avg   8.33 ms, max    36.0 ms
+[CC-Profile]   #32 "load 6"                   16.5% of period,  1199 tasks, avg   8.24 ms, max    36.7 ms
+[CC-Profile]   #34 "load 8"                   16.5% of period,  1199 tasks, avg   8.24 ms, max    44.3 ms
+[CC-Profile]   #31 "load 5"                   16.4% of period,  1199 tasks, avg   8.19 ms, max    34.5 ms
+[CC-Profile]   #30 "load 4"                   15.8% of period,  1199 tasks, avg   7.89 ms, max    34.7 ms
+[CC-Profile]   #6 "lane 11"                    5.1% of period,  1161 tasks, avg   2.64 ms, max    36.2 ms
+[CC-Profile]   #20 "lane 6"                    4.7% of period,  1246 tasks, avg   2.26 ms, max    47.7 ms
+[CC-Profile]   #22 "lane 8"                    4.3% of period,  1039 tasks, avg   2.48 ms, max    33.5 ms
+[CC-Profile]   #8 "lane0"                      4.2% of period,  1316 tasks, avg   1.93 ms, max    40.0 ms
+[CC-Profile]   #13 "dash 4"                    4.2% of period,   601 tasks, avg   4.16 ms, max    33.9 ms
+[CC-Profile]   #26 "lane 15"                   4.0% of period,   879 tasks, avg   2.75 ms, max    31.0 ms
+[CC-Profile]   #21 "lane 7"                    3.9% of period,   880 tasks, avg   2.63 ms, max    37.8 ms
+[CC-Profile]   #16 "lane 3"                    3.7% of period,   885 tasks, avg   2.53 ms, max    38.7 ms
+[CC-Profile]   #24 "lane 10"                   3.7% of period,   892 tasks, avg   2.49 ms, max    33.2 ms
+[CC-Profile]   #25 "lane 13"                   3.6% of period,   937 tasks, avg   2.32 ms, max    37.4 ms
+[CC-Profile]   #18 "lane 4"                    3.6% of period,   803 tasks, avg   2.66 ms, max    39.9 ms
+[CC-Profile]   #15 "lane 2"                    3.4% of period,   812 tasks, avg   2.49 ms, max    31.8 ms
+[CC-Profile]   #7 "lane 12"                    3.4% of period,  1059 tasks, avg   1.91 ms, max    29.9 ms
+[CC-Profile]   #23 "lane 9"                    3.3% of period,   914 tasks, avg   2.18 ms, max    43.3 ms
+[CC-Profile]   #19 "lane 5"                    3.1% of period,   803 tasks, avg   2.32 ms, max    31.9 ms
+[CC-Profile]   #5 "lane 14"                    3.1% of period,   815 tasks, avg   2.27 ms, max    32.7 ms
+[CC-Profile]   #14 "lane1"                     3.1% of period,   927 tasks, avg   1.99 ms, max    30.1 ms
+[CC-Profile]   #12 "dash 3"                    2.4% of period,   599 tasks, avg   2.40 ms, max    14.5 ms
+[CC-Profile]   #-1                             2.2% of period,  1196 tasks, avg   1.09 ms, max    24.1 ms
+[CC-Profile]   #10 "dash 1"                    1.9% of period,   600 tasks, avg   1.86 ms, max    16.2 ms
+[CC-Profile]   #11 "dash 2"                    1.6% of period,   600 tasks, avg   1.62 ms, max    14.4 ms
+[CC-Profile]   #17 "service"                   1.6% of period,   420 tasks, avg   2.22 ms, max    24.5 ms
+[CC-Profile]   #9 "main"                       0.7% of period,   114 tasks, avg   3.47 ms, max    20.6 ms
+[CC-Profile] 60s: 30391 tasks, thread busy 196.1%, queue wait avg 3.5 ms / max 251 ms, DROPPED (queue full) 0, worker threads created 0, mode 8 threads (busy % is summed over them)
+[CC-Profile]   #27 "load 1"                   17.0% of period,  1188 tasks, avg   8.59 ms, max    36.3 ms
+[CC-Profile]   #28 "load 2"                   15.6% of period,  1188 tasks, avg   7.89 ms, max    35.4 ms
+[CC-Profile]   #29 "load 3"                   15.0% of period,  1190 tasks, avg   7.56 ms, max    47.6 ms
+[CC-Profile]   #32 "load 6"                   15.0% of period,  1192 tasks, avg   7.54 ms, max    62.2 ms
+[CC-Profile]   #31 "load 5"                   14.9% of period,  1192 tasks, avg   7.50 ms, max    41.9 ms
+[CC-Profile]   #34 "load 8"                   14.8% of period,  1192 tasks, avg   7.45 ms, max    40.5 ms
+[CC-Profile]   #33 "load 7"                   14.8% of period,  1192 tasks, avg   7.45 ms, max    37.8 ms
+[CC-Profile]   #30 "load 4"                   14.2% of period,  1192 tasks, avg   7.16 ms, max    40.0 ms
+[CC-Profile]   #24 "lane 10"                   5.0% of period,  1278 tasks, avg   2.36 ms, max    26.3 ms
+[CC-Profile]   #22 "lane 8"                    4.9% of period,  1101 tasks, avg   2.69 ms, max    57.0 ms
+[CC-Profile]   #7 "lane 12"                    4.6% of period,  1148 tasks, avg   2.39 ms, max    28.9 ms
+[CC-Profile]   #15 "lane 2"                    4.4% of period,  1280 tasks, avg   2.05 ms, max    54.4 ms
+[CC-Profile]   #20 "lane 6"                    3.9% of period,   960 tasks, avg   2.45 ms, max    32.1 ms
+[CC-Profile]   #6 "lane 11"                    3.8% of period,  1003 tasks, avg   2.26 ms, max    78.7 ms
+[CC-Profile]   #18 "lane 4"                    3.6% of period,   898 tasks, avg   2.39 ms, max    66.8 ms
+[CC-Profile]   #14 "lane1"                     3.6% of period,  1160 tasks, avg   1.85 ms, max    26.2 ms
+[CC-Profile]   #21 "lane 7"                    3.5% of period,   986 tasks, avg   2.13 ms, max    32.8 ms
+[CC-Profile]   #19 "lane 5"                    3.5% of period,   865 tasks, avg   2.43 ms, max    53.5 ms
+[CC-Profile]   #8 "lane0"                      3.5% of period,   819 tasks, avg   2.54 ms, max    66.5 ms
+[CC-Profile]   #16 "lane 3"                    3.4% of period,   856 tasks, avg   2.37 ms, max    53.7 ms
+[CC-Profile]   #13 "dash 4"                    3.3% of period,   596 tasks, avg   3.36 ms, max    26.2 ms
+[CC-Profile]   #23 "lane 9"                    3.3% of period,  1170 tasks, avg   1.70 ms, max    28.2 ms
+[CC-Profile]   #5 "lane 14"                    3.3% of period,   985 tasks, avg   2.00 ms, max    28.2 ms
+[CC-Profile]   #26 "lane 15"                   3.2% of period,   870 tasks, avg   2.20 ms, max    41.3 ms
+[CC-Profile]   #-1                             2.8% of period,  1429 tasks, avg   1.19 ms, max    31.6 ms
+[CC-Profile]   #25 "lane 13"                   2.6% of period,   814 tasks, avg   1.95 ms, max    37.2 ms
+[CC-Profile]   #17 "service"                   2.3% of period,   720 tasks, avg   1.94 ms, max    29.3 ms
+[CC-Profile]   #12 "dash 3"                    2.3% of period,   598 tasks, avg   2.29 ms, max    17.7 ms
+[CC-Profile]   #10 "dash 1"                    1.5% of period,   597 tasks, avg   1.55 ms, max    22.0 ms
+[CC-Profile]   #11 "dash 2"                    1.5% of period,   597 tasks, avg   1.53 ms, max    20.5 ms
+[CC-Profile]   #9 "main"                       0.9% of period,   135 tasks, avg   4.05 ms, max    20.7 ms
+[CC-Profile] 60s: 27923 tasks, thread busy 185.5%, queue wait avg 2.8 ms / max 80 ms, DROPPED (queue full) 0, worker threads created 0, mode 8 threads (busy % is summed over them)
+[CC-Profile]   #27 "load 1"                   16.9% of period,  1193 tasks, avg   8.50 ms, max    55.4 ms
+[CC-Profile]   #28 "load 2"                   15.8% of period,  1194 tasks, avg   7.93 ms, max    55.5 ms
+[CC-Profile]   #33 "load 7"                   14.9% of period,  1198 tasks, avg   7.44 ms, max    51.2 ms
+[CC-Profile]   #31 "load 5"                   14.8% of period,  1198 tasks, avg   7.43 ms, max    51.4 ms
+[CC-Profile]   #29 "load 3"                   14.7% of period,  1197 tasks, avg   7.37 ms, max    48.5 ms
+[CC-Profile]   #34 "load 8"                   14.7% of period,  1198 tasks, avg   7.35 ms, max    52.8 ms
+[CC-Profile]   #30 "load 4"                   14.7% of period,  1198 tasks, avg   7.35 ms, max    51.0 ms
+[CC-Profile]   #32 "load 6"                   14.4% of period,  1198 tasks, avg   7.21 ms, max    50.6 ms
+[CC-Profile]   #18 "lane 4"                    5.7% of period,  1094 tasks, avg   3.15 ms, max    64.2 ms
+[CC-Profile]   #16 "lane 3"                    5.5% of period,  1307 tasks, avg   2.51 ms, max    59.6 ms
+[CC-Profile]   #26 "lane 15"                   5.2% of period,  1181 tasks, avg   2.66 ms, max    52.1 ms
+[CC-Profile]   #6 "lane 11"                    4.1% of period,  1068 tasks, avg   2.29 ms, max    43.1 ms
+[CC-Profile]   #8 "lane0"                      3.6% of period,  1043 tasks, avg   2.10 ms, max    33.5 ms
+[CC-Profile]   #21 "lane 7"                    3.6% of period,   964 tasks, avg   2.26 ms, max    44.4 ms
+[CC-Profile]   #22 "lane 8"                    3.6% of period,  1230 tasks, avg   1.75 ms, max    41.9 ms
+[CC-Profile]   #20 "lane 6"                    3.5% of period,   941 tasks, avg   2.22 ms, max    40.3 ms
+[CC-Profile]   #25 "lane 13"                   3.0% of period,   898 tasks, avg   2.03 ms, max    36.2 ms
+[CC-Profile]   #13 "dash 4"                    3.0% of period,   600 tasks, avg   3.02 ms, max    34.2 ms
+[CC-Profile]   #7 "lane 12"                    3.0% of period,   897 tasks, avg   2.00 ms, max    48.0 ms
+[CC-Profile]   #14 "lane1"                     3.0% of period,   882 tasks, avg   2.03 ms, max    48.8 ms
+[CC-Profile]   #17 "service"                   2.9% of period,   894 tasks, avg   1.93 ms, max    29.8 ms
+[CC-Profile]   #23 "lane 9"                    2.4% of period,   813 tasks, avg   1.80 ms, max    29.3 ms
+[CC-Profile]   #12 "dash 3"                    2.3% of period,   599 tasks, avg   2.32 ms, max    16.4 ms
+[CC-Profile]   #-1                             2.3% of period,  1245 tasks, avg   1.10 ms, max    24.8 ms
+[CC-Profile]   #24 "lane 10"                   1.8% of period,   458 tasks, avg   2.29 ms, max    44.0 ms
+[CC-Profile]   #5 "lane 14"                    1.6% of period,   501 tasks, avg   1.91 ms, max    24.0 ms
+[CC-Profile]   #11 "dash 2"                    1.5% of period,   600 tasks, avg   1.47 ms, max    16.9 ms
+[CC-Profile]   #10 "dash 1"                    1.5% of period,   600 tasks, avg   1.45 ms, max    12.4 ms
+[CC-Profile]   #15 "lane 2"                    1.0% of period,   393 tasks, avg   1.48 ms, max    32.4 ms
+[CC-Profile]   #9 "main"                       0.6% of period,   114 tasks, avg   3.20 ms, max    28.0 ms
+[CC-Profile] 60s: 26512 tasks, thread busy 193.4%, queue wait avg 3.1 ms / max 59 ms, DROPPED (queue full) 0, worker threads created 0, mode 8 threads (busy % is summed over them)
+[CC-Profile]   #27 "load 1"                   17.7% of period,  1197 tasks, avg   8.89 ms, max    40.1 ms
+[CC-Profile]   #28 "load 2"                   17.7% of period,  1196 tasks, avg   8.87 ms, max    55.3 ms
+[CC-Profile]   #29 "load 3"                   16.1% of period,  1199 tasks, avg   8.06 ms, max    37.6 ms
+[CC-Profile]   #33 "load 7"                   15.9% of period,  1199 tasks, avg   7.98 ms, max    37.8 ms
+[CC-Profile]   #32 "load 6"                   15.7% of period,  1199 tasks, avg   7.85 ms, max    37.9 ms
+[CC-Profile]   #31 "load 5"                   15.6% of period,  1199 tasks, avg   7.82 ms, max    37.8 ms
+[CC-Profile]   #34 "load 8"                   15.4% of period,  1200 tasks, avg   7.72 ms, max    38.6 ms
+[CC-Profile]   #30 "load 4"                   15.0% of period,  1199 tasks, avg   7.53 ms, max    35.5 ms
+[CC-Profile]   #25 "lane 13"                   4.5% of period,  1126 tasks, avg   2.40 ms, max    49.3 ms
+[CC-Profile]   #24 "lane 10"                   4.3% of period,  1157 tasks, avg   2.22 ms, max    30.0 ms
+[CC-Profile]   #21 "lane 7"                    4.2% of period,  1055 tasks, avg   2.40 ms, max    33.2 ms
+[CC-Profile]   #15 "lane 2"                    4.1% of period,  1249 tasks, avg   1.96 ms, max    26.3 ms
+[CC-Profile]   #20 "lane 6"                    3.8% of period,   848 tasks, avg   2.72 ms, max    52.4 ms
+[CC-Profile]   #8 "lane0"                      3.8% of period,   882 tasks, avg   2.61 ms, max    33.2 ms
+[CC-Profile]   #6 "lane 11"                    3.8% of period,   808 tasks, avg   2.83 ms, max    33.3 ms
+[CC-Profile]   #23 "lane 9"                    3.5% of period,   980 tasks, avg   2.17 ms, max    39.2 ms
+[CC-Profile]   #13 "dash 4"                    3.5% of period,   600 tasks, avg   3.51 ms, max    29.7 ms
+[CC-Profile]   #26 "lane 15"                   3.4% of period,   782 tasks, avg   2.63 ms, max    38.2 ms
+[CC-Profile]   #14 "lane1"                     3.4% of period,   820 tasks, avg   2.50 ms, max    30.8 ms
+[CC-Profile]   #16 "lane 3"                    3.4% of period,   975 tasks, avg   2.08 ms, max    31.6 ms
+[CC-Profile]   #17 "service"                   3.3% of period,   914 tasks, avg   2.16 ms, max    27.5 ms
+[CC-Profile]   #7 "lane 12"                    3.2% of period,   816 tasks, avg   2.33 ms, max    29.6 ms
+[CC-Profile]   #22 "lane 8"                    3.0% of period,   857 tasks, avg   2.10 ms, max    42.8 ms
+[CC-Profile]   #12 "dash 3"                    2.5% of period,   600 tasks, avg   2.52 ms, max    17.7 ms
+[CC-Profile]   #-1                             2.0% of period,  1078 tasks, avg   1.11 ms, max    28.7 ms
+[CC-Profile]   #10 "dash 1"                    1.7% of period,   600 tasks, avg   1.75 ms, max    14.5 ms
+[CC-Profile]   #11 "dash 2"                    1.6% of period,   600 tasks, avg   1.58 ms, max    11.7 ms
+[CC-Profile]   #9 "main"                       0.6% of period,   103 tasks, avg   3.78 ms, max    20.9 ms
+[CC-Profile] 60s: 24960 tasks, thread busy 193.9%, queue wait avg 3.1 ms / max 96 ms, DROPPED (queue full) 0, worker threads created 0, mode 8 threads (busy % is summed over them)
+[CC-Profile]   #28 "load 2"                   17.8% of period,  1178 tasks, avg   9.07 ms, max    51.1 ms
+[CC-Profile]   #27 "load 1"                   17.5% of period,  1183 tasks, avg   8.89 ms, max    51.7 ms
+[CC-Profile]   #31 "load 5"                   16.5% of period,  1186 tasks, avg   8.35 ms, max    67.2 ms
+[CC-Profile]   #29 "load 3"                   16.3% of period,  1186 tasks, avg   8.27 ms, max    61.9 ms
+[CC-Profile]   #32 "load 6"                   16.3% of period,  1186 tasks, avg   8.26 ms, max    67.4 ms
+[CC-Profile]   #30 "load 4"                   16.3% of period,  1187 tasks, avg   8.23 ms, max    67.1 ms
+[CC-Profile]   #34 "load 8"                   16.1% of period,  1186 tasks, avg   8.17 ms, max    66.9 ms
+[CC-Profile]   #33 "load 7"                   16.1% of period,  1187 tasks, avg   8.16 ms, max    66.7 ms
+[CC-Profile]   #8 "lane0"                      6.3% of period,  1321 tasks, avg   2.87 ms, max   689.4 ms
+[CC-Profile]   #6 "lane 11"                    4.9% of period,  1240 tasks, avg   2.36 ms, max    34.2 ms
+[CC-Profile]   #26 "lane 15"                   4.8% of period,  1204 tasks, avg   2.40 ms, max    39.7 ms
+[CC-Profile]   #16 "lane 3"                    4.8% of period,  1046 tasks, avg   2.75 ms, max    36.7 ms
+[CC-Profile]   #13 "dash 4"                    3.8% of period,   595 tasks, avg   3.87 ms, max    40.7 ms
+[CC-Profile]   #15 "lane 2"                    3.7% of period,   876 tasks, avg   2.55 ms, max    39.8 ms
+[CC-Profile]   #22 "lane 8"                    3.6% of period,   872 tasks, avg   2.46 ms, max    50.3 ms
+[CC-Profile]   #20 "lane 6"                    3.5% of period,   931 tasks, avg   2.29 ms, max    38.1 ms
+[CC-Profile]   #14 "lane1"                     3.4% of period,   900 tasks, avg   2.27 ms, max    65.7 ms
+[CC-Profile]   #23 "lane 9"                    3.3% of period,   871 tasks, avg   2.30 ms, max    37.6 ms
+[CC-Profile]   #7 "lane 12"                    3.3% of period,   936 tasks, avg   2.11 ms, max    27.9 ms
+[CC-Profile]   #21 "lane 7"                    3.3% of period,   861 tasks, avg   2.28 ms, max    60.9 ms
+[CC-Profile]   #24 "lane 10"                   3.2% of period,   822 tasks, avg   2.36 ms, max    47.0 ms
+[CC-Profile]   #12 "dash 3"                    2.6% of period,   595 tasks, avg   2.64 ms, max    26.8 ms
+[CC-Profile]   #10 "dash 1"                    1.8% of period,   595 tasks, avg   1.79 ms, max    21.2 ms
+[CC-Profile]   #-1                             1.8% of period,   994 tasks, avg   1.07 ms, max    27.2 ms
+[CC-Profile]   #11 "dash 2"                    1.7% of period,   595 tasks, avg   1.69 ms, max    18.2 ms
+[CC-Profile] 60s: 23353 tasks, thread busy 164.6%, queue wait avg 2.2 ms / max 36 ms, DROPPED (queue full) 0, worker threads created 0, mode 8 threads (busy % is summed over them)
+[CC-Profile]   #27 "load 1"                   16.9% of period,  1198 tasks, avg   8.48 ms, max    66.8 ms
+[CC-Profile]   #28 "load 2"                   16.0% of period,  1196 tasks, avg   8.05 ms, max    53.0 ms
+[CC-Profile]   #31 "load 5"                   15.1% of period,  1199 tasks, avg   7.54 ms, max    40.6 ms
+[CC-Profile]   #33 "load 7"                   15.0% of period,  1200 tasks, avg   7.50 ms, max    40.3 ms
+[CC-Profile]   #34 "load 8"                   15.0% of period,  1199 tasks, avg   7.48 ms, max    40.7 ms
+[CC-Profile]   #32 "load 6"                   14.8% of period,  1200 tasks, avg   7.40 ms, max    37.0 ms
+[CC-Profile]   #29 "load 3"                   14.7% of period,  1199 tasks, avg   7.34 ms, max    37.2 ms
+[CC-Profile]   #30 "load 4"                   14.5% of period,  1200 tasks, avg   7.24 ms, max    40.0 ms
+[CC-Profile]   #16 "lane 3"                    3.6% of period,   968 tasks, avg   2.21 ms, max    26.6 ms
+[CC-Profile]   #6 "lane 11"                    3.5% of period,  1182 tasks, avg   1.77 ms, max    29.0 ms
+[CC-Profile]   #21 "lane 7"                    3.2% of period,   966 tasks, avg   2.01 ms, max    31.0 ms
+[CC-Profile]   #13 "dash 4"                    3.1% of period,   600 tasks, avg   3.12 ms, max    27.3 ms
+[CC-Profile]   #15 "lane 2"                    3.1% of period,  1050 tasks, avg   1.77 ms, max    25.0 ms
+[CC-Profile]   #14 "lane1"                     3.0% of period,  1227 tasks, avg   1.48 ms, max    19.2 ms
+[CC-Profile]   #23 "lane 9"                    2.8% of period,   833 tasks, avg   2.03 ms, max    48.1 ms
+[CC-Profile]   #8 "lane0"                      2.8% of period,   827 tasks, avg   2.02 ms, max    47.9 ms
+[CC-Profile]   #24 "lane 10"                   2.7% of period,   873 tasks, avg   1.84 ms, max    32.1 ms
+[CC-Profile]   #26 "lane 15"                   2.6% of period,   795 tasks, avg   1.98 ms, max    24.4 ms
+[CC-Profile]   #12 "dash 3"                    2.2% of period,   600 tasks, avg   2.24 ms, max    16.0 ms
+[CC-Profile]   #22 "lane 8"                    2.2% of period,   801 tasks, avg   1.66 ms, max    25.3 ms
+[CC-Profile]   #20 "lane 6"                    2.2% of period,   558 tasks, avg   2.35 ms, max    35.6 ms
+[CC-Profile]   #11 "dash 2"                    1.5% of period,   600 tasks, avg   1.48 ms, max    12.5 ms
+[CC-Profile]   #10 "dash 1"                    1.4% of period,   599 tasks, avg   1.40 ms, max    10.7 ms
+[CC-Profile]   #-1                             1.1% of period,   864 tasks, avg   0.78 ms, max    16.4 ms
+[CC-Profile]   #17 "service"                   1.0% of period,   290 tasks, avg   2.16 ms, max    35.7 ms
+[CC-Profile] 60s: 20209 tasks, thread busy 138.1%, queue wait avg 1.4 ms / max 29 ms, DROPPED (queue full) 0, worker threads created 0, mode 8 threads (busy % is summed over them)
+[CC-Profile]   #27 "load 1"                   15.2% of period,  1198 tasks, avg   7.63 ms, max    42.4 ms
+[CC-Profile]   #28 "load 2"                   15.0% of period,  1199 tasks, avg   7.50 ms, max    39.4 ms
+[CC-Profile]   #33 "load 7"                   13.5% of period,  1199 tasks, avg   6.75 ms, max    32.8 ms
+[CC-Profile]   #31 "load 5"                   13.4% of period,  1199 tasks, avg   6.71 ms, max    25.2 ms
+[CC-Profile]   #29 "load 3"                   13.3% of period,  1199 tasks, avg   6.64 ms, max    32.9 ms
+[CC-Profile]   #32 "load 6"                   13.3% of period,  1199 tasks, avg   6.64 ms, max    33.2 ms
+[CC-Profile]   #34 "load 8"                   13.2% of period,  1199 tasks, avg   6.59 ms, max    33.3 ms
+[CC-Profile]   #30 "load 4"                   13.1% of period,  1199 tasks, avg   6.55 ms, max    34.5 ms
+[CC-Profile]   #14 "lane1"                     3.5% of period,  1186 tasks, avg   1.76 ms, max    24.1 ms
+[CC-Profile]   #8 "lane0"                      3.1% of period,  1151 tasks, avg   1.64 ms, max    36.2 ms
+[CC-Profile]   #24 "lane 10"                   2.6% of period,  1110 tasks, avg   1.43 ms, max    22.0 ms
+[CC-Profile]   #22 "lane 8"                    2.5% of period,   961 tasks, avg   1.58 ms, max    24.5 ms
+[CC-Profile]   #13 "dash 4"                    2.5% of period,   600 tasks, avg   2.49 ms, max    18.5 ms
+[CC-Profile]   #26 "lane 15"                   2.3% of period,   908 tasks, avg   1.54 ms, max    26.5 ms
+[CC-Profile]   #6 "lane 11"                    2.3% of period,   925 tasks, avg   1.51 ms, max    36.2 ms
+[CC-Profile]   #23 "lane 9"                    2.0% of period,   786 tasks, avg   1.55 ms, max    21.2 ms
+[CC-Profile]   #12 "dash 3"                    1.9% of period,   600 tasks, avg   1.92 ms, max    19.1 ms
+[CC-Profile]   #10 "dash 1"                    1.4% of period,   600 tasks, avg   1.41 ms, max    27.2 ms
+[CC-Profile]   #11 "dash 2"                    1.3% of period,   600 tasks, avg   1.35 ms, max    11.2 ms
+[CC-Profile]   #-1                             0.9% of period,   690 tasks, avg   0.75 ms, max    18.1 ms
+[CC-Profile]   #15 "lane 2"                    0.7% of period,   181 tasks, avg   2.33 ms, max    27.8 ms
+[CC-Profile] 60s: 16562 tasks, thread busy 115.8%, queue wait avg 1.0 ms / max 23 ms, DROPPED (queue full) 0, worker threads created 0, mode 8 threads (busy % is summed over them)
+[CC-Profile]   #27 "load 1"                   13.9% of period,  1200 tasks, avg   6.96 ms, max    39.6 ms
+[CC-Profile]   #28 "load 2"                   13.2% of period,  1199 tasks, avg   6.58 ms, max    37.2 ms
+[CC-Profile]   #31 "load 5"                   12.1% of period,  1199 tasks, avg   6.06 ms, max    23.2 ms
+[CC-Profile]   #33 "load 7"                   11.9% of period,  1200 tasks, avg   5.94 ms, max    26.2 ms
+[CC-Profile]   #29 "load 3"                   11.7% of period,  1201 tasks, avg   5.87 ms, max    34.8 ms
+[CC-Profile]   #32 "load 6"                   11.7% of period,  1199 tasks, avg   5.87 ms, max    23.3 ms
+[CC-Profile]   #34 "load 8"                   11.7% of period,  1199 tasks, avg   5.86 ms, max    25.1 ms
+[CC-Profile]   #30 "load 4"                   11.6% of period,  1200 tasks, avg   5.80 ms, max    40.5 ms
+[CC-Profile]   #14 "lane1"                     3.4% of period,  1037 tasks, avg   1.96 ms, max    28.0 ms
+[CC-Profile]   #8 "lane0"                      3.3% of period,  1282 tasks, avg   1.55 ms, max    34.5 ms
+[CC-Profile]   #6 "lane 11"                    2.5% of period,  1062 tasks, avg   1.39 ms, max    21.6 ms
+[CC-Profile]   #13 "dash 4"                    2.1% of period,   600 tasks, avg   2.08 ms, max    16.5 ms
+[CC-Profile]   #12 "dash 3"                    1.9% of period,   600 tasks, avg   1.94 ms, max    16.0 ms
+[CC-Profile]   #10 "dash 1"                    1.3% of period,   600 tasks, avg   1.30 ms, max    10.5 ms
+[CC-Profile]   #22 "lane 8"                    1.2% of period,   540 tasks, avg   1.36 ms, max    15.8 ms
+[CC-Profile]   #11 "dash 2"                    1.2% of period,   600 tasks, avg   1.23 ms, max     4.2 ms
+[CC-Profile] 60s: 13514 tasks, thread busy 100.8%, queue wait avg 0.8 ms / max 22 ms, DROPPED (queue full) 0, worker threads created 0, mode 8 threads (busy % is summed over them)
+[CC-Profile]   #27 "load 1"                   11.8% of period,  1197 tasks, avg   5.93 ms, max    39.0 ms
+[CC-Profile]   #31 "load 5"                   11.6% of period,  1199 tasks, avg   5.79 ms, max    18.9 ms
+[CC-Profile]   #33 "load 7"                   11.5% of period,  1198 tasks, avg   5.74 ms, max    40.3 ms
+[CC-Profile]   #29 "load 3"                   11.5% of period,  1198 tasks, avg   5.74 ms, max    23.3 ms
+[CC-Profile]   #30 "load 4"                   11.4% of period,  1199 tasks, avg   5.70 ms, max    25.2 ms
+[CC-Profile]   #32 "load 6"                   11.4% of period,  1198 tasks, avg   5.70 ms, max    24.9 ms
+[CC-Profile]   #34 "load 8"                   11.3% of period,  1199 tasks, avg   5.63 ms, max    25.3 ms
+[CC-Profile]   #28 "load 2"                   10.4% of period,  1198 tasks, avg   5.20 ms, max    36.7 ms
+[CC-Profile]   #8 "lane0"                      2.4% of period,   997 tasks, avg   1.47 ms, max    25.7 ms
+[CC-Profile]   #13 "dash 4"                    2.0% of period,   600 tasks, avg   1.99 ms, max    15.2 ms
+[CC-Profile]   #12 "dash 3"                    1.9% of period,   600 tasks, avg   1.91 ms, max    10.0 ms
+[CC-Profile]   #11 "dash 2"                    1.2% of period,   600 tasks, avg   1.22 ms, max     9.8 ms
+[CC-Profile]   #10 "dash 1"                    1.1% of period,   599 tasks, avg   1.14 ms, max    11.1 ms
+[CC-Profile]   #14 "lane1"                     0.7% of period,   171 tasks, avg   2.49 ms, max    21.6 ms
+[CC-Profile]   #9 "main"                       0.3% of period,    70 tasks, avg   2.53 ms, max    10.3 ms
+[CC-Profile] 60s: 13032 tasks, thread busy 98.5%, queue wait avg 0.7 ms / max 18 ms, DROPPED (queue full) 0, worker threads created 0, mode 8 threads (busy % is summed over them)
+[CC-Profile]   #27 "load 1"                   11.6% of period,  1199 tasks, avg   5.82 ms, max    30.9 ms
+[CC-Profile]   #31 "load 5"                   11.6% of period,  1199 tasks, avg   5.80 ms, max    25.7 ms
+[CC-Profile]   #29 "load 3"                   11.3% of period,  1198 tasks, avg   5.68 ms, max    25.4 ms
+[CC-Profile]   #34 "load 8"                   11.3% of period,  1199 tasks, avg   5.65 ms, max    25.3 ms
+[CC-Profile]   #32 "load 6"                   11.3% of period,  1198 tasks, avg   5.66 ms, max    23.2 ms
+[CC-Profile]   #33 "load 7"                   11.3% of period,  1198 tasks, avg   5.64 ms, max    31.9 ms
+[CC-Profile]   #30 "load 4"                   11.1% of period,  1199 tasks, avg   5.57 ms, max    23.4 ms
+[CC-Profile]   #28 "load 2"                   10.3% of period,  1199 tasks, avg   5.14 ms, max    28.8 ms
+[CC-Profile]   #13 "dash 4"                    2.0% of period,   600 tasks, avg   1.97 ms, max    16.1 ms
+[CC-Profile]   #12 "dash 3"                    1.9% of period,   600 tasks, avg   1.90 ms, max    14.3 ms
+[CC-Profile]   #8 "lane0"                      1.9% of period,   829 tasks, avg   1.37 ms, max    26.3 ms
+[CC-Profile]   #11 "dash 2"                    1.2% of period,   600 tasks, avg   1.21 ms, max     9.6 ms
+[CC-Profile]   #10 "dash 1"                    1.2% of period,   600 tasks, avg   1.17 ms, max     4.4 ms
+[CC-Profile]   #9 "main"                       0.3% of period,    68 tasks, avg   2.52 ms, max    11.0 ms
+[CC-Profile]   #14 "lane1"                     0.0% of period,     6 tasks, avg   2.53 ms, max    11.1 ms
+
+# Then burn raised to 32,000 / 45,000 / 60,000 / 80,000 units, 3 minutes each (per-minute totals and load 1, dash 1, lane 0):
+== 32000 units
+60s: 47369 tasks, thread busy 336.7%, queue wait avg 12.3 ms / max 375 ms, DROPPED (queue full) 0
+  #27 "load 1"                   24.8% of period,  1174 tasks, avg  12.66 ms, max    53.9 ms
+  #8 "lane0"                      4.9% of period,  1340 tasks, avg   2.20 ms, max    52.5 ms
+  #10 "dash 1"                    1.3% of period,   593 tasks, avg   1.28 ms, max    12.9 ms
+60s: 42122 tasks, thread busy 317.4%, queue wait avg 8.0 ms / max 195 ms, DROPPED (queue full) 0
+  #27 "load 1"                   26.4% of period,  1187 tasks, avg  13.33 ms, max    48.0 ms
+  #8 "lane0"                      5.1% of period,  1119 tasks, avg   2.74 ms, max    64.7 ms
+  #10 "dash 1"                    1.4% of period,   598 tasks, avg   1.36 ms, max    20.0 ms
+60s: 29892 tasks, thread busy 250.9%, queue wait avg 4.3 ms / max 80 ms, DROPPED (queue full) 0
+  #27 "load 1"                   24.9% of period,  1197 tasks, avg  12.50 ms, max    44.8 ms
+  #8 "lane0"                      4.3% of period,  1208 tasks, avg   2.15 ms, max    44.8 ms
+  #10 "dash 1"                    1.6% of period,   600 tasks, avg   1.60 ms, max    16.9 ms
+== 45000 units
+60s: 27823 tasks, thread busy 282.7%, queue wait avg 4.9 ms / max 75 ms, DROPPED (queue full) 0
+  #27 "load 1"                   30.0% of period,  1197 tasks, avg  15.03 ms, max    44.4 ms
+  #10 "dash 1"                    1.4% of period,   600 tasks, avg   1.43 ms, max     5.2 ms
+  #8 "lane0"                      1.2% of period,   483 tasks, avg   1.45 ms, max    21.0 ms
+60s: 26951 tasks, thread busy 276.5%, queue wait avg 4.6 ms / max 89 ms, DROPPED (queue full) 0
+  #27 "load 1"                   29.4% of period,  1197 tasks, avg  14.75 ms, max    47.4 ms
+  #8 "lane0"                      3.7% of period,  1070 tasks, avg   2.09 ms, max    26.9 ms
+  #10 "dash 1"                    1.4% of period,   600 tasks, avg   1.43 ms, max    11.8 ms
+60s: 27471 tasks, thread busy 279.7%, queue wait avg 5.0 ms / max 79 ms, DROPPED (queue full) 0
+  #27 "load 1"                   29.0% of period,  1195 tasks, avg  14.54 ms, max    61.6 ms
+  #8 "lane0"                      3.3% of period,   909 tasks, avg   2.18 ms, max    43.2 ms
+  #10 "dash 1"                    1.5% of period,   600 tasks, avg   1.54 ms, max    14.5 ms
+== 60000 units
+60s: 28155 tasks, thread busy 374.8%, queue wait avg 8.8 ms / max 124 ms, DROPPED (queue full) 0
+  #27 "load 1"                   36.3% of period,  1168 tasks, avg  18.67 ms, max    65.1 ms
+  #8 "lane0"                      3.6% of period,   813 tasks, avg   2.65 ms, max    44.8 ms
+  #10 "dash 1"                    1.9% of period,   599 tasks, avg   1.95 ms, max    29.8 ms
+60s: 28493 tasks, thread busy 376.1%, queue wait avg 8.4 ms / max 139 ms, DROPPED (queue full) 0
+  #27 "load 1"                   37.7% of period,  1186 tasks, avg  19.10 ms, max    60.3 ms
+  #8 "lane0"                      4.4% of period,   876 tasks, avg   3.02 ms, max    33.3 ms
+  #10 "dash 1"                    1.9% of period,   599 tasks, avg   1.95 ms, max    29.4 ms
+60s: 28576 tasks, thread busy 378.1%, queue wait avg 8.1 ms / max 91 ms, DROPPED (queue full) 0
+  #27 "load 1"                   37.9% of period,  1176 tasks, avg  19.33 ms, max    61.2 ms
+  #8 "lane0"                      4.1% of period,   840 tasks, avg   2.91 ms, max    50.1 ms
+  #10 "dash 1"                    2.0% of period,   600 tasks, avg   1.97 ms, max    26.2 ms
+== 80000 units
+60s: 30001 tasks, thread busy 458.8%, queue wait avg 10.9 ms / max 173 ms, DROPPED (queue full) 0
+  #27 "load 1"                   46.6% of period,  1155 tasks, avg  24.21 ms, max    59.2 ms
+  #8 "lane0"                      3.5% of period,  1204 tasks, avg   1.73 ms, max    29.1 ms
+  #10 "dash 1"                    1.7% of period,   598 tasks, avg   1.67 ms, max    27.5 ms
+60s: 29292 tasks, thread busy 464.1%, queue wait avg 11.6 ms / max 686 ms, DROPPED (queue full) 0
+  #27 "load 1"                   47.4% of period,  1147 tasks, avg  24.80 ms, max   692.3 ms
+  #8 "lane0"                      5.0% of period,  1237 tasks, avg   2.41 ms, max    37.8 ms
+  #10 "dash 1"                    1.8% of period,   593 tasks, avg   1.78 ms, max    16.8 ms
+60s: 29387 tasks, thread busy 456.0%, queue wait avg 10.6 ms / max 117 ms, DROPPED (queue full) 0
+  #27 "load 1"                   46.6% of period,  1167 tasks, avg  23.98 ms, max    67.7 ms
+  #8 "lane0"                      4.0% of period,   909 tasks, avg   2.64 ms, max    43.3 ms
+  #10 "dash 1"                    1.7% of period,   599 tasks, avg   1.67 ms, max    18.3 ms
+

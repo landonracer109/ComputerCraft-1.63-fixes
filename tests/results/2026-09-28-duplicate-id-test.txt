@@ -1,0 +1,7 @@
+# Duplicate-ID test: 24 computers without an ID start at the same moment and each ask for a new one.
+# The harness's ID counter is deliberately slow (reads, waits 1 ms, writes), so any overlap gives duplicates.
+# 'no world lock' is a throwaway build with the lock switched off, to show the test catches the problem.
+
+original scheduler:            24 unique, 0 duplicates
+8 threads, no world lock:      9 unique, 15 duplicates (8 computers got ID 0, 8 got ID 1)
+8 threads, task-level lock:    24 unique, 0 duplicates
